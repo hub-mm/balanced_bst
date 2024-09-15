@@ -25,6 +25,32 @@ class Tree
     parent.data > new_node.data ? parent.left = new_node : parent.right = new_node
   end
 
+  def find_successor(current)
+    return current.right if current.left.nil?
+
+    current.left unless current.nil? && current.left.nil?
+  end
+
+  def delete(data, current = @root)
+    return current if current.nil?
+
+    if current.data > data
+      current.left = delete(data, current.left)
+    elsif current.data < data
+      current.right = delete(data, current.right)
+    else
+      return current.left if current.right.nil?
+
+      return current.right if current.left.nil?
+
+      successor = find_successor(current)
+      current.data = successor.data
+      current.left = delete(successor.data, current.left)
+    end
+
+    current
+  end
+
   def build_tree(data_arr)
     return if data_arr.empty?
 
