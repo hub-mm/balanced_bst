@@ -63,4 +63,15 @@ class Tree
     puts "#{prefix}#{is_left ? '└── ' : '┌── '}#{node.data}"
     pretty_print(node.left, "#{prefix}#{is_left ? '    ' : '│   '}", true) if node.left
   end
+
+  def find(data, current = @root)
+    return nil if current.nil?
+
+    return puts current.data if current.data == data
+
+    find(data, current.left)
+    find(data, current.right)
+
+    nil
+  end
 end
