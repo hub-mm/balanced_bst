@@ -121,4 +121,35 @@ class Tree
 
     order
   end
+
+  def node_height(node)
+    return -1 if node.nil?
+
+    left_height = node_height(node.left)
+    right_height = node_height(node.right)
+
+    1 + [left_height, right_height].max
+  end
+
+  def height(node, current = @root)
+    return -1 if current.nil?
+
+    return node_height(current) if current.data == node
+
+    left_result = height(node, current.left)
+    return left_result unless left_result == -1
+
+    height(node, current.right)
+  end
+
+  def depth(node, current = @root, current_depth = 0)
+    return -1 if current.nil?
+
+    return current_depth if current.data == node
+
+    left_depth = depth(node, current.left, current_depth + 1)
+    return left_depth unless left_depth == -1
+
+    depth(node, current.right, current_depth + 1)
+  end
 end
