@@ -10,29 +10,30 @@ class Tree
   end
 
   def insert(data, current = @root, new_node = Node.new(data), parent = nil)
-    return new_node if @root.nil?
+    return @root = Node.new(data) if @root.nil?
 
-    until current.nil?
+    while current
       parent = current
 
       case current.data <=> new_node.data
       when 1 then current = current.left
       when -1 then current = current.right
-      else current
+      else return
       end
     end
 
-    parent.data > new_node.data ? parent.left = new_node : parent.right = new_node
+    parent.data > data ? parent.left = new_node : parent.right = new_node
   end
 
-  def find_successor(current)
-    return current.right if current.left.nil?
+  def find_successor(node)
+    successor = node.right
 
-    current.left unless current.nil? && current.left.nil?
+    successor = successor.left while successor.left
+    successor
   end
 
   def delete(data, current = @root)
-    return current if current.nil?
+    return nil if current.nil?
 
     if current.data > data
       current.left = delete(data, current.left)
@@ -45,7 +46,7 @@ class Tree
 
       successor = find_successor(current)
       current.data = successor.data
-      current.left = delete(successor.data, current.left)
+      current.right = delete(successor.data, current.right)
     end
 
     current
@@ -73,5 +74,30 @@ class Tree
     find(data, current.right)
 
     nil
+  end
+
+  def level_order(queue = [@root], order = [])
+    return nil if @root.nil?
+
+    until queue.empty?
+      current = queue.shift
+      order << current.data
+      queue << current.left unless current.left.nil?
+      queue << current.right unless current.right.nil?
+    end
+
+    p order
+  end
+
+  def inorder(data = @root, order = nil)
+    order ||= []
+
+    return order if data.nil?
+
+    inorder(data.left, order)
+    order << data.data
+    inorder(data.right, order)
+
+    order
   end
 end
