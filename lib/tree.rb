@@ -3,6 +3,8 @@
 
 require_relative 'node'
 
+# Class Tree to take care building tree and functions.
+# rubocop: disable Metrics/ClassLength
 class Tree
   attr_accessor :root
 
@@ -35,6 +37,7 @@ class Tree
     parent.data > data ? parent.left = new_node : parent.right = new_node
   end
 
+  # rubocop: disable Metrics
   def delete(data, current = @root)
     return nil if current.nil?
 
@@ -54,6 +57,7 @@ class Tree
 
     current
   end
+  # rubocop: enable Metrics
 
   def find(data, current = @root)
     return nil if current.nil?

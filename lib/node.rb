@@ -1,6 +1,7 @@
 # node.rb
 # frozen_string_literal: true
 
+# Class Node takes care of building node needed in tree.
 class Node
   include Comparable
 
