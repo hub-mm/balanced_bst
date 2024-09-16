@@ -4,9 +4,19 @@
 require_relative 'node'
 
 class Tree
+  attr_accessor :root
+
   def initialize(data_arr)
-    @data_arr = data_arr.sort!.uniq!
-    @root = build_tree(@data_arr)
+    data_arr = [] if data_arr.nil?
+    data_arr = data_arr.sort!.uniq!
+    @root = build_tree(data_arr)
+  end
+
+  def build_tree(data_arr)
+    return nil if data_arr.nil? || data_arr.empty?
+
+    mid = data_arr.length / 2
+    Node.new(data_arr[mid], build_tree(data_arr[...mid]), build_tree(data_arr[mid + 1..]))
   end
 
   def insert(data, current = @root, new_node = Node.new(data), parent = nil)
@@ -23,13 +33,6 @@ class Tree
     end
 
     parent.data > data ? parent.left = new_node : parent.right = new_node
-  end
-
-  def find_successor(node)
-    successor = node.right
-
-    successor = successor.left while successor.left
-    successor
   end
 
   def delete(data, current = @root)
@@ -50,19 +53,6 @@ class Tree
     end
 
     current
-  end
-
-  def build_tree(data_arr)
-    return if data_arr.empty?
-
-    mid = data_arr.length / 2
-    Node.new(data_arr[mid], build_tree(data_arr[...mid]), build_tree(data_arr[mid + 1..]))
-  end
-
-  def pretty_print(node = @root, prefix = '', is_left = true) # rubocop: disable Style/OptionalBooleanParameter
-    pretty_print(node.right, "#{prefix}#{is_left ? '│   ' : '    '}", false) if node.right
-    puts "#{prefix}#{is_left ? '└── ' : '┌── '}#{node.data}"
-    pretty_print(node.left, "#{prefix}#{is_left ? '    ' : '│   '}", true) if node.left
   end
 
   def find(data, current = @root)
@@ -122,15 +112,6 @@ class Tree
     order
   end
 
-  def node_height(node)
-    return -1 if node.nil?
-
-    left_height = node_height(node.left)
-    right_height = node_height(node.right)
-
-    1 + [left_height, right_height].max
-  end
-
   def height(node, current = @root)
     return -1 if current.nil?
 
@@ -151,5 +132,44 @@ class Tree
     return left_depth unless left_depth == -1
 
     depth(node, current.right, current_depth + 1)
+  end
+
+  def balanced?(node = @root)
+    return true if node.nil?
+
+    left_height = height(node.left.data)
+    right_height = height(node.right.data)
+
+    (left_height - right_height).abs <= 1
+  end
+
+  def rebalance
+    @root = build_tree(inorder) unless balanced?
+  end
+
+  def pretty_print(node = @root, prefix = '', is_left = true) # rubocop: disable Style/OptionalBooleanParameter
+    return if node.nil?
+
+    pretty_print(node.right, "#{prefix}#{is_left ? '│   ' : '    '}", false) if node.right
+    puts "#{prefix}#{is_left ? '└── ' : '┌── '}#{node.data}"
+    pretty_print(node.left, "#{prefix}#{is_left ? '    ' : '│   '}", true) if node.left
+  end
+
+  private
+
+  def find_successor(node)
+    successor = node.right
+
+    successor = successor.left while successor.left
+    successor
+  end
+
+  def node_height(node)
+    return -1 if node.nil?
+
+    left_height = node_height(node.left)
+    right_height = node_height(node.right)
+
+    1 + [left_height, right_height].max
   end
 end
