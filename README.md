@@ -32,7 +32,7 @@ Examples of how to use the functions can be found in ```main.rb```.
 
 <strong>Clone repository:</strong>
 ```
-xxx
+git@github.com:hub-mm/balanced_bst.git
 ```
 
 <strong>Move into file using command line:</strong>
