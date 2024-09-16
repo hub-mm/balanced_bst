@@ -64,7 +64,7 @@ puts "\n|-----------------------------|\n\n"
 
 puts "Find method: #{tree.find(1)}, #{tree.find(6)}, #{tree.find(50)}, #{tree.find(324)}"
 
-puts "\nHeight method: #{tree.height(10)}, #{tree.height(1)}, #{tree.height(23)}, #{tree.height(324)}, #{tree.height(8)}"
+puts "\nHeight method: #{tree.height(2)}, #{tree.height(1)}, #{tree.height(12)}, #{tree.height(10)}, #{tree.height(23)}"
 
 puts "\nDepth method: #{tree.depth(50)}, #{tree.depth(1)}, #{tree.depth(6345)}, #{tree.depth(5)}, #{tree.depth(8)}"
 
