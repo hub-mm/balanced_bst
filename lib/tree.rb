@@ -68,12 +68,9 @@ class Tree
   def find(data, current = @root)
     return nil if current.nil?
 
-    return puts current.data if current.data == data
+    return current.data if current.data == data
 
-    find(data, current.left)
-    find(data, current.right)
-
-    nil
+    find(data, current.left) || find(data, current.right)
   end
 
   def level_order(queue = [@root], order = [])
@@ -86,7 +83,7 @@ class Tree
       queue << current.right unless current.right.nil?
     end
 
-    p order
+    order
   end
 
   def inorder(data = @root, order = nil)
@@ -97,6 +94,30 @@ class Tree
     inorder(data.left, order)
     order << data.data
     inorder(data.right, order)
+
+    order
+  end
+
+  def preorder(data = @root, order = nil)
+    order ||= []
+
+    return order if data.nil?
+
+    order << data.data
+    preorder(data.left, order)
+    preorder(data.right, order)
+
+    order
+  end
+
+  def postoder(data = @root, order = nil)
+    order ||= []
+
+    return order if data.nil?
+
+    postoder(data.left, order)
+    postoder(data.right, order)
+    order << data.data
 
     order
   end
